@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 
 const NavBar = () => {
+    const { user, logOut } = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        logOut()
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+            })
+            .catch(error => console.error(error))
+    }
+    console.log(user)
     return (
         <div className="navbar bg-teal-300">
             <div className="navbar-start">
@@ -10,8 +22,22 @@ const NavBar = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                     </label>
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><a>Item 1</a></li>
-                        <li><a>Item 3</a></li>
+                    <li><Link to="/media">Media</Link></li>
+                    <li><Link to="/messages">Messages</Link></li>
+                    <li><Link to="/about">About</Link></li>
+                    <>
+                        {
+                            user?.uid ?
+                                <>
+                                    <button onClick={handleLogOut}>LogOut</button>
+                                </>
+                                :
+                                <>
+                                    <li><Link to='/login'>Login</Link></li>
+                                    <li><Link to='/register'>Register</Link></li>
+                                </>
+                        }
+                    </>
                     </ul>
                 </div>
                 <Link to="/" className="btn btn-ghost normal-case text-xl">Be Social</Link>
@@ -21,8 +47,21 @@ const NavBar = () => {
                     <li><Link to="/media">Media</Link></li>
                     <li><Link to="/messages">Messages</Link></li>
                     <li><Link to="/about">About</Link></li>
+                    <>
+                        {
+                            user?.uid ?
+                                <>
+                                    <button onClick={handleLogOut} className='me-2'>LogOut</button>
+                                </>
+                                :
+                                <>
+                                    <li><Link to='/login'>Login</Link></li>
+                                    <li><Link to='/register'>Register</Link></li>
+                                </>
+                        }
+                    </>
 
-                    
+
                 </ul>
             </div>
             <div className="navbar-end">
