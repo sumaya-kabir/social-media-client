@@ -31,7 +31,7 @@ const FirstSec = () => {
                 img: photo
             }
     
-            fetch('http://localhost:5000/posts', {
+            fetch('https://socail-media-server.vercel.app/posts', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

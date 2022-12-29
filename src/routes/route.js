@@ -21,7 +21,7 @@ export const routes = createBrowserRouter([
             },
             {
                 path: '/postdetails/:id',
-                loader: ({params}) => fetch(`http://localhost:5000/posts/${params.id}`),
+                loader: ({params}) => fetch(`https://socail-media-server.vercel.app/posts/${params.id}`),
                 element: <PostDetails></PostDetails>
             },
             {
