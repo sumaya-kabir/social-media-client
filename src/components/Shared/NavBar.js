@@ -7,10 +7,7 @@ const NavBar = () => {
 
     const handleLogOut = () => {
         logOut()
-            .then(result => {
-                const user = result.user;
-                console.log(user)
-            })
+            .then(() => {})
             .catch(error => console.error(error))
     }
     console.log(user)
@@ -29,7 +26,7 @@ const NavBar = () => {
                         {
                             user?.uid ?
                                 <>
-                                    <button onClick={handleLogOut}>LogOut</button>
+                                    <button onClick={handleLogOut}>Logout</button>
                                 </>
                                 :
                                 <>
@@ -50,9 +47,9 @@ const NavBar = () => {
                     <>
                         {
                             user?.uid ?
-                                <>
-                                    <button onClick={handleLogOut} className='me-2'>LogOut</button>
-                                </>
+                                <li>
+                                    <button onClick={handleLogOut} >Logout</button>
+                                </li>
                                 :
                                 <>
                                     <li><Link to='/login'>Login</Link></li>

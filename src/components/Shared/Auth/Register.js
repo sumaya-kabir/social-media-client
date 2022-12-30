@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
+import {  useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 
 const Register = () => {
-    const {createUser} = useContext(AuthContext);
+    const {createUser, googleSignin} = useContext(AuthContext);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleRegister = (event) => {
         event.preventDefault();
@@ -14,7 +16,7 @@ const Register = () => {
         
         const name = form.username.value;
 
-        // console.log(email, password, name, photoURL);
+        // console.log(email, password, name);
 
         createUser(email, password)
             .then(result => {
@@ -28,6 +30,18 @@ const Register = () => {
                 console.log(error);
                 setError(error.message);
             })
+    }
+
+    const handleGoogleSignIn = () => {
+        googleSignin()
+        .then(result => {
+            const user = result.user;
+            console.log(user);
+            setError('');
+            navigate('/')
+
+        })
+        .catch(err => console.error(err))
     }
     return (
         <div className="hero min-h-screen bg-base-200">
@@ -60,6 +74,8 @@ const Register = () => {
                             <button type="submit" className="btn btn-primary">Register</button>
                         </div>
                         <p className='text-red-600'>{error}</p>
+                        <div className="divider">OR</div>
+                        <button onClick={handleGoogleSignIn} className="btn btn-outline">Continue with Google</button>
                     </form>
                 </div>
             </div>

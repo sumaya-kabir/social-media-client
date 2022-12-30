@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import  {app}  from '../../firebase/firebase.config';
-import {createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile} from 'firebase/auth'
+import {createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile} from 'firebase/auth'
 
 export const AuthContext = createContext();
 
@@ -10,10 +10,7 @@ const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const providerLogin = (provider) => {
-        setLoading(true);
-        return signInWithPopup(auth, provider)
-    }
+    const googleProvider = new GoogleAuthProvider();
 
     const createUser = (email, password) => {
         setLoading(true);
@@ -23,6 +20,11 @@ const AuthProvider = ({children}) => {
     const logIn = (email, password) => {
         setLoading(true);
         return signInWithEmailAndPassword(auth, email, password);
+    }
+
+    const googleSignin = () => {
+        setLoading(true);
+        return signInWithPopup(auth, googleProvider)
     }
 
     const logOut = () => {
@@ -40,9 +42,10 @@ const AuthProvider = ({children}) => {
 
     useEffect(() => {
         const unsubscribe= onAuthStateChanged(auth, (currentUser) => {
-            if(currentUser === null || currentUser.emailVerified){
-                setUser(currentUser);
-            }
+            // if(currentUser === null || currentUser.emailVerified){
+            //     setUser(currentUser);
+            // }
+            setUser(currentUser);
             setLoading(false);
         });
         return () => {
@@ -50,7 +53,7 @@ const AuthProvider = ({children}) => {
         }
     }, [])
 
-    const authInfo= {user, loading, setLoading, providerLogin, createUser, logIn, logOut, updateUserProfile}
+    const authInfo= {user, loading, setLoading, googleSignin, createUser, logIn, logOut, updateUserProfile}
     return (
         <div>
             <AuthContext.Provider value={authInfo}>
